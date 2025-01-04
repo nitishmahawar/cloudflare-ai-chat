@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify"
+  },
+  "dependencies": {
+    "@ai-sdk/groq": "^1.0.9",
+    "@hono/zod-validator": "^0.4.2",
+    "@prisma/adapter-d1": "^6.1.0",
+    "@prisma/client": "^6.1.0",
+    "ai": "^4.0.22",
+    "better-auth": "^1.1.8",
+    "hono": "^4.6.15",
+    "workers-ai-provider": "^0.0.10",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241218.0",
+    "wrangler": "^3.96.0"
+  }
+}

@@ -1,0 +1,18 @@
+meta {
+  name: O Auth
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{BASE_URL}}/api/auth/sign-in/social
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "provider":"google",
+    "callbackUrl":"http://localhost:3000"
+  }
+}

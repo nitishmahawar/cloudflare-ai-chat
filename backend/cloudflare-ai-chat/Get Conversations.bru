@@ -1,0 +1,16 @@
+meta {
+  name: Get Conversations
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{BASE_URL}}/api/chat/conversations?page=1&limit=20
+  body: none
+  auth: none
+}
+
+params:query {
+  page: 1
+  limit: 20
+}

@@ -1,0 +1,18 @@
+meta {
+  name: Chat
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{BASE_URL}}/api/chat
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "conversationId":"asdfskldfjsdf34",
+    "messages":[{ "role":"user","content":"Hello" }]
+  }
+}

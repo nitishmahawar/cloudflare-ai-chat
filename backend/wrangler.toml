@@ -1,0 +1,30 @@
+name = "cloudflare-ai-chat"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+compatibility_flags = [ "nodejs_compat" ]
+keep_vars = true
+
+# [vars]
+# MY_VAR = "my-variable"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "7aa611da2eea47c08317363bd23c0cd0"
+
+# [[r2_buckets]]
+# binding = "MY_BUCKET"
+# bucket_name = "my-bucket"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "cloudflare-ai-chat"
+database_id = "0d19cd50-fae4-4500-926f-51d97c0716de"
+
+[ai]
+binding = "AI"
+
+[observability]
+enabled = true
+
+[placement]
+mode = "smart"

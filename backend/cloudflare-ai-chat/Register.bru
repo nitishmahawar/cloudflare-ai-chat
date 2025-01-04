@@ -1,0 +1,19 @@
+meta {
+  name: Register
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{BASE_URL}}/api/auth/sign-up/email
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name":"Nitish Mahawar",
+    "email":"nitishmahawar@gmail.com",
+    "password":"Nitish@7426"
+  }
+}
