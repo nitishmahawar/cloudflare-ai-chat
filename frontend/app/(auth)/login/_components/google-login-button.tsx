@@ -2,6 +2,7 @@
 import { Spinner } from "@/components/spinner";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { getBaseUrl } from "@/lib/utils";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
@@ -12,8 +13,8 @@ export const GoogleLoginButton = () => {
     const data = await authClient.signIn.social(
       {
         provider: "google",
-        callbackURL: "http://localhost:3000",
-        newUserCallbackURL: "http://localhost:3000",
+        callbackURL: getBaseUrl(),
+        newUserCallbackURL: getBaseUrl(),
       },
       {
         onRequest: () => {

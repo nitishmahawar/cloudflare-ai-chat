@@ -62,3 +62,29 @@ export function categorizeConversations(
     )
   );
 }
+
+export const getBaseUrl = (): string => {
+  // Check if we're in a browser environment
+  if (typeof window !== "undefined") {
+    return ""; // Empty string for client-side as we use relative URLs
+  }
+
+  // For development environment
+  if (process.env.NODE_ENV === "development") {
+    return `http://localhost:${process.env.PORT || 3000}`;
+  }
+
+  // For production environment
+  // First check for VERCEL_URL which is provided by Vercel
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
+  // Then check for custom domain set in environment variables
+  if (process.env.NEXT_PUBLIC_BASE_URL) {
+    return process.env.NEXT_PUBLIC_BASE_URL;
+  }
+
+  // Fallback to localhost if nothing else is setx
+  return `http://localhost:${process.env.PORT || 3000}`;
+};

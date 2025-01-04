@@ -20,7 +20,10 @@ export const createAuth = ({
   return betterAuth({
     appName: "cloudflare-ai-chat",
     database: prismaAdapter(prisma, { provider: "sqlite" }),
-    trustedOrigins: ["http://localhost:3000"],
+    trustedOrigins: [
+      "http://localhost:3000",
+      "https://cloudflare-ai-chat.vercel.app",
+    ],
     emailAndPassword: {
       enabled: true,
     },

@@ -10,7 +10,10 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
   .use(
     "*",
     cors({
-      origin: ["http://localhost:3000"], // replace with your origin
+      origin: [
+        "http://localhost:3000",
+        "https://cloudflare-ai-chat.vercel.app",
+      ], // replace with your origin
       allowHeaders: ["Content-Type", "Authorization"],
       allowMethods: ["POST", "GET", "PATCH", "DELETE", "OPTIONS"],
       exposeHeaders: ["Content-Length"],
