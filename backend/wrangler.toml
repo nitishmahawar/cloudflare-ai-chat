@@ -10,6 +10,7 @@ keep_vars = true
 [[kv_namespaces]]
 binding = "KV"
 id = "7aa611da2eea47c08317363bd23c0cd0"
+preview_id = "aaabf972e1904667bcab2dc95c7f8290"
 
 # [[r2_buckets]]
 # binding = "MY_BUCKET"

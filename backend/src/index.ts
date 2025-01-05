@@ -5,6 +5,7 @@ import chatApp from "@/chat";
 import { HTTPException } from "hono/http-exception";
 import { cors } from "hono/cors";
 import { User } from "@prisma/client";
+import { logger } from "hono/logger";
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
   .use(
@@ -13,13 +14,14 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
       origin: [
         "http://localhost:3000",
         "https://cloudflare-ai-chat.vercel.app",
-      ], // replace with your origin
+      ],
       allowHeaders: ["Content-Type", "Authorization"],
       allowMethods: ["POST", "GET", "PATCH", "DELETE", "OPTIONS"],
-      exposeHeaders: ["Content-Length"],
+      exposeHeaders: ["Content-Length", "Set-Cookie"],
       maxAge: 600,
       credentials: true,
     }),
+    logger(),
     initDBAndAuth
   )
   .on(["POST", "GET"], "/api/auth/**", (c) => {

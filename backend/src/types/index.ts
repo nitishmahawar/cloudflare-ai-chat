@@ -12,6 +12,7 @@ export interface Bindings {
   GOOGLE_CLIENT_SECRET: string;
   GROQ_API_KEY: string;
   TRUSTED_ORIGIN: string;
+  ENV: "PRODUCTION" | "DEVELOPMENT";
 }
 
 type Auth = ReturnType<typeof createAuth>;

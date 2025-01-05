@@ -1,22 +1,14 @@
-import { PrismaClient } from "@prisma/client";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import { openAPI } from "better-auth/plugins";
-import { hashPassword } from "./utils";
+import { Context } from "hono";
+import { Bindings, Variables } from "@/types";
 
-export const createAuth = ({
-  prisma,
-  authSecret,
-  kv,
-  google,
-  trustedOrigin,
-}: {
-  prisma: PrismaClient;
-  authSecret: string;
-  kv: KVNamespace<string>;
-  google: { clientId: string; clientSecret: string };
-  trustedOrigin: string;
-}) => {
+export const createAuth = (
+  c: Context<{ Variables: Variables; Bindings: Bindings }>
+) => {
+  const prisma = c.get("prisma");
+  const kv = c.env.KV;
+
   return betterAuth({
     appName: "cloudflare-ai-chat",
     database: prismaAdapter(prisma, { provider: "sqlite" }),
@@ -27,16 +19,23 @@ export const createAuth = ({
     emailAndPassword: {
       enabled: true,
     },
+    logger: { level: "debug", disabled: false },
     socialProviders: {
       google: {
-        clientId: google.clientId,
-        clientSecret: google.clientSecret,
+        clientId: c.env.GOOGLE_CLIENT_ID,
+        clientSecret: c.env.GOOGLE_CLIENT_SECRET,
       },
     },
     advanced: {
       generateId: false,
+      // useSecureCookies: c.env.ENV === "PRODUCTION",
+      defaultCookieAttributes: {
+        sameSite: c.env.ENV === "PRODUCTION" ? "none" : "lax",
+        secure: c.env.ENV === "PRODUCTION",
+      },
     },
-    secret: authSecret,
+    rateLimit: { enabled: true },
+    secret: c.env.BETTER_AUTH_SECRET,
     secondaryStorage: {
       get: async (key) => {
         const value = await kv.get(key, "text");

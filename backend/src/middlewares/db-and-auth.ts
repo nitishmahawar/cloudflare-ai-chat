@@ -11,16 +11,7 @@ export const initDBAndAuth = (
 
   c.set("prisma", prisma);
 
-  const auth = createAuth({
-    prisma,
-    kv: c.env.KV,
-    authSecret: c.env.BETTER_AUTH_SECRET,
-    google: {
-      clientId: c.env.GOOGLE_CLIENT_ID,
-      clientSecret: c.env.GOOGLE_CLIENT_SECRET,
-    },
-    trustedOrigin: c.env.TRUSTED_ORIGIN,
-  });
+  const auth = createAuth(c);
 
   c.set("auth", auth);
 

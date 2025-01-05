@@ -13,7 +13,9 @@ export default async function authMiddleware(request: NextRequest) {
     }
   );
 
-  const isAuthRoute = request.nextUrl.pathname.startsWith("/login");
+  const isAuthRoute =
+    request.nextUrl.pathname.startsWith("/login") ||
+    request.nextUrl.pathname.startsWith("/register");
 
   // Redirect logged in users away from auth routes
   if (session && isAuthRoute) {

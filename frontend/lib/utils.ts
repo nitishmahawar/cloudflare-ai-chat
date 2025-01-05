@@ -15,6 +15,9 @@ export function categorizeConversations(
   conversations: Conversation[]
 ): Record<string, Conversation[]> {
   const now = new Date();
+  const utcNow = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+  );
   const categorized: Record<string, Conversation[]> = {
     Today: [],
     "Previous 7 days": [],
@@ -23,7 +26,14 @@ export function categorizeConversations(
 
   conversations.forEach((conversation) => {
     const createdAt = new Date(conversation.createdAt);
-    const diffTime = now.getTime() - createdAt.getTime();
+    const utcCreatedAt = new Date(
+      Date.UTC(
+        createdAt.getUTCFullYear(),
+        createdAt.getUTCMonth(),
+        createdAt.getUTCDate()
+      )
+    );
+    const diffTime = utcNow.getTime() - utcCreatedAt.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays === 0) {
@@ -33,16 +43,16 @@ export function categorizeConversations(
     } else if (diffDays <= 30) {
       categorized["Previous 30 days"].push(conversation);
     } else {
-      const currentYear = now.getFullYear();
-      const conversationYear = createdAt.getFullYear();
-      const conversationMonth = createdAt.getMonth();
+      const currentYear = utcNow.getUTCFullYear();
+      const conversationYear = utcCreatedAt.getUTCFullYear();
+      const conversationMonth = utcCreatedAt.getUTCMonth();
 
       let category: string;
       if (conversationYear === currentYear) {
-        if (conversationMonth === 11 && now.getMonth() === 0) {
+        if (conversationMonth === 11 && utcNow.getUTCMonth() === 0) {
           category = currentYear.toString();
         } else {
-          category = createdAt.toLocaleString("default", { month: "long" });
+          category = utcCreatedAt.toLocaleString("default", { month: "long" });
         }
       } else {
         category = conversationYear.toString();
