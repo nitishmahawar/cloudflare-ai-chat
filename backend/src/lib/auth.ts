@@ -12,14 +12,12 @@ export const createAuth = (
   return betterAuth({
     appName: "cloudflare-ai-chat",
     database: prismaAdapter(prisma, { provider: "sqlite" }),
-    trustedOrigins: [
-      "http://localhost:3000",
-      "https://cloudflare-ai-chat.vercel.app",
-    ],
+    secret: c.env.BETTER_AUTH_SECRET,
+    baseURL: c.env.BETTER_AUTH_URL,
+    trustedOrigins: c.env.TRUSTED_ORIGIN.split(","),
     emailAndPassword: {
       enabled: true,
     },
-    logger: { level: "debug", disabled: false },
     socialProviders: {
       google: {
         clientId: c.env.GOOGLE_CLIENT_ID,
@@ -28,14 +26,12 @@ export const createAuth = (
     },
     advanced: {
       generateId: false,
-      // useSecureCookies: c.env.ENV === "PRODUCTION",
       defaultCookieAttributes: {
-        sameSite: c.env.ENV === "PRODUCTION" ? "none" : "lax",
-        secure: c.env.ENV === "PRODUCTION",
+        sameSite: "none",
+        secure: true,
       },
     },
     rateLimit: { enabled: true },
-    secret: c.env.BETTER_AUTH_SECRET,
     secondaryStorage: {
       get: async (key) => {
         const value = await kv.get(key, "text");

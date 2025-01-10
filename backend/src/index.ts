@@ -4,7 +4,6 @@ import { initDBAndAuth } from "@/middlewares/db-and-auth";
 import chatApp from "@/chat";
 import { HTTPException } from "hono/http-exception";
 import { cors } from "hono/cors";
-import { User } from "@prisma/client";
 import { logger } from "hono/logger";
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
@@ -29,24 +28,9 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
     return auth.handler(c.req.raw);
   })
   .get("/", (c) => {
-    return c.text("Hello Hono!");
+    return c.json({ success: true, message: "✨Cloudflare AI Chat API!✨" });
   })
   .route("/api/chat", chatApp)
-  .get("/api/users", async (c) => {
-    const prisma = c.get("prisma");
-    const kv = c.env.KV;
-
-    let users: User[] | null = await kv.get("users", "json");
-
-    if (users) {
-      return c.json({ success: true, data: users, message: "From cache" });
-    }
-
-    users = await prisma.user.findMany();
-    await kv.put("users", JSON.stringify(users));
-
-    return c.json({ success: true, data: users, message: "From db" });
-  })
   .notFound((c) => {
     return c.json<ErrorResponse>(
       {
