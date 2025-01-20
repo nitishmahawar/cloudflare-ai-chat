@@ -7,6 +7,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { GoogleLoginButton } from "./_components/google-login-button";
+import { SocialLoginButtons } from "./_components/social-login-buttons";
 
 const Page = () => {
   return (
@@ -18,7 +19,8 @@ const Page = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <GoogleLoginButton />
+        {/* <GoogleLoginButton /> */}
+        <SocialLoginButtons />
       </CardContent>
     </Card>
   );

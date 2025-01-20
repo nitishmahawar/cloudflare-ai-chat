@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { createAuth } from "@/lib/auth";
 import { Session, User } from "better-auth";
 
 export interface Bindings {
@@ -10,15 +9,14 @@ export interface Bindings {
   BETTER_AUTH_URL: string;
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
+  GITHUB_CLIENT_ID: string;
+  GITHUB_CLIENT_SECRET: string;
   GROQ_API_KEY: string;
   TRUSTED_ORIGIN: string;
 }
 
-type Auth = ReturnType<typeof createAuth>;
-
 export interface Variables {
   prisma: PrismaClient;
-  auth: Auth;
   user: User;
   session: Session;
 }

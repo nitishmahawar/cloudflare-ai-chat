@@ -20,6 +20,10 @@ export const setupAuth = (
         clientId: c.env.GOOGLE_CLIENT_ID,
         clientSecret: c.env.GOOGLE_CLIENT_SECRET,
       },
+      github: {
+        clientId: c.env.GITHUB_CLIENT_ID,
+        clientSecret: c.env.GITHUB_CLIENT_SECRET,
+      },
     },
     advanced: {
       generateId: false,
