@@ -5,6 +5,7 @@ import chatApp from "@/chat";
 import { HTTPException } from "hono/http-exception";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { setupAuth } from "@/lib/auth";
 
 const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
   .use(
@@ -13,6 +14,7 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
       origin: [
         "http://localhost:3000",
         "https://cloudflare-ai-chat.vercel.app",
+        "https://cfw-chat.nitishmahawar.dev",
       ],
       allowHeaders: ["Content-Type", "Authorization"],
       allowMethods: ["POST", "GET", "PATCH", "DELETE", "OPTIONS"],
@@ -24,8 +26,7 @@ const app = new Hono<{ Bindings: Bindings; Variables: Variables }>()
     initDBAndAuth
   )
   .on(["POST", "GET"], "/api/auth/**", (c) => {
-    const auth = c.get("auth");
-    return auth.handler(c.req.raw);
+    return setupAuth(c).handler(c.req.raw);
   })
   .get("/", (c) => {
     return c.json({ success: true, message: "✨Cloudflare AI Chat API!✨" });

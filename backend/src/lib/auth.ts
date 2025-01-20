@@ -3,7 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { Context } from "hono";
 import { Bindings, Variables } from "@/types";
 
-export const createAuth = (
+export const setupAuth = (
   c: Context<{ Variables: Variables; Bindings: Bindings }>
 ) => {
   const prisma = c.get("prisma");
@@ -15,9 +15,6 @@ export const createAuth = (
     secret: c.env.BETTER_AUTH_SECRET,
     baseURL: c.env.BETTER_AUTH_URL,
     trustedOrigins: c.env.TRUSTED_ORIGIN.split(","),
-    emailAndPassword: {
-      enabled: true,
-    },
     socialProviders: {
       google: {
         clientId: c.env.GOOGLE_CLIENT_ID,
@@ -26,9 +23,9 @@ export const createAuth = (
     },
     advanced: {
       generateId: false,
-      defaultCookieAttributes: {
-        sameSite: "none",
-        secure: true,
+      crossSubDomainCookies: {
+        enabled: !c.env.BETTER_AUTH_URL.includes("localhost"),
+        domain: "nitishmahawar.dev",
       },
     },
     rateLimit: { enabled: true },

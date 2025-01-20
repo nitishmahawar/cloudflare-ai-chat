@@ -9,7 +9,6 @@ import {
   patchConversationSchema,
 } from "./schema";
 import { streamText, generateObject } from "ai";
-import { createWorkersAI } from "workers-ai-provider";
 import { z } from "zod";
 import { createGroq } from "@ai-sdk/groq";
 import { defaultHook } from "@/lib/default-hook";
@@ -62,33 +61,24 @@ const app = new Hono<{ Variables: Variables; Bindings: Bindings }>()
       model,
       messages,
       async onFinish(event) {
-        await Promise.all([
-          prisma.message.create({
-            data: {
+        await prisma.message.createMany({
+          data: [
+            {
               conversationId: conversation.id,
               role: "user",
               content: lastUserMessage.content,
             },
-          }),
-          prisma.message.create({
-            data: {
+            {
               conversationId: conversation.id,
               role: "assistant",
               content: event.text,
             },
-          }),
-        ]);
+          ],
+        });
       },
     });
 
-    return result.toDataStreamResponse({
-      headers: {
-        "x-conversation-id": conversation.id,
-        // "Content-Type": "text/x-unknown",
-        // "content-encoding": "identity",
-        // "transfer-encoding": "chunked",
-      },
-    });
+    return result.toDataStreamResponse();
   })
   .get(
     "/conversations",
